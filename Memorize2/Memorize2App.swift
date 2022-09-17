@@ -9,11 +9,13 @@ import SwiftUI
 
 @main
 struct Memorize2App: App {
+    
+    let game = EmojiMemoryGame()
+    
     var body: some Scene {
         WindowGroup {
-            // ContentView()
-            //FooterView(footerModel: FooterView_Previews.footerModel)
-            PampaView()
+            ContentView(viewModel: game)
+            // PampaView()
         }
     }
 }

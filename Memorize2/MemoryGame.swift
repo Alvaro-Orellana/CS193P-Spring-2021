@@ -7,27 +7,51 @@
 
 import Foundation
 
-struct MemoryGame<CardContent> {
+struct MemoryGame<CardContent> where CardContent: Comparable {
     
-    var cards: [Card]
+    private(set) var cards: [Card]
+    private var indexOfTheOneAndOnlyFaceupCard: Int?
     
-    init(numberOfPairsOfCards: Int, createContent: (Int) -> CardContent) {
+    init(numberOfPairsOfCards: Int, content: (Int) -> CardContent) {
         cards = []
         for pairIndex in 0..<numberOfPairsOfCards {
-            let pair1 = Card(content: createContent(pairIndex)) // pair index deberia ser el mismo en los 2?
-            let pair2 = Card(content: createContent(pairIndex))
+            let pair1 = Card(id: pairIndex * 2, content: content(pairIndex))
+            let pair2 = Card(id: pairIndex * 2 + 1, content: content(pairIndex))
             cards += [pair1, pair2]
         }
     }
  
-    func choose(_ card: Card) {
-        
+    mutating func choose(_ card: Card) {
+        if let choosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
+           
+            if let faceupIndex = indexOfTheOneAndOnlyFaceupCard,
+               faceupIndex != choosenIndex,
+               !card.isMatched
+            {
+                // Check if cards match
+                if cards[faceupIndex].content == cards[choosenIndex].content {
+                    cards[faceupIndex].isMatched = true
+                    cards[choosenIndex].isMatched = true
+                }
+                
+                self.indexOfTheOneAndOnlyFaceupCard = nil
+                
+            } else {
+                // Either all cards are face down or two cards are face up
+                for index in cards.indices {
+                    cards[index].isFaceUp = false
+                }
+                self.indexOfTheOneAndOnlyFaceupCard = choosenIndex
+            }
+            cards[choosenIndex].isFaceUp.toggle()
+        }
     }
     
     
-    struct Card {
+    struct Card: Identifiable {
+        let id: Int
         var isFaceUp = false
         var isMatched = false
-        var content: CardContent
+        let content: CardContent
     }
 }

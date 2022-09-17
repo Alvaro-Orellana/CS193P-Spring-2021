@@ -7,58 +7,52 @@
 
 import SwiftUI
 
-//struct ContentView: View {
-//
-//    var numberOfCards: Int {
-//        let elementsCount = ContentView.themes["Vehicules"]!.count
-//        let random = Int.random(in: 4...elementsCount)
-//        print("the random is \(random)")
-//        return random
-//    }
-//
-//    @State var theme = themes["Vehicules"]!
-//
-//    var body: some View {
-//        NavigationView {
-//            LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-//                ForEach(theme[0..<numberOfCards], id: \.self) { emoji in
-//                    CardView(image: emoji)
-//                        .aspectRatio(2/3, contentMode: .fit)
-//                }
-//                .foregroundColor(.red)
-//            }
-//            .navigationTitle("Memorize!")
-//        }
-//    }
-//
-//}
-
-struct CardView: View {
+struct ContentView: View {
     
-    var image: String
-    @State var isFaceUp = true
+    @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
-        ZStack {
-            let shape = RoundedRectangle(cornerRadius: 20)
-            if isFaceUp {
-                shape.foregroundColor(.white)
-                shape.strokeBorder(lineWidth: 4)
-                
-                Text(image)
-                    .font(.largeTitle)
-            } else {
-                shape
+        NavigationView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+                ForEach(viewModel.cards) { card in
+                    CardView(card: card)
+                        .aspectRatio(2/3, contentMode: .fit)
+                        .onTapGesture {
+                            viewModel.choose(card)
+                        }
+                }
             }
-        }
-        .onTapGesture {
-            isFaceUp.toggle()
+            .navigationTitle("Memorize!")
         }
     }
 }
 
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
+struct CardView: View {
+    
+    var card: MemoryGame<String>.Card
+    
+    var body: some View {
+        ZStack {
+            let shape = RoundedRectangle(cornerRadius: 20)
+            
+            if card.isFaceUp {
+                shape.strokeBorder(lineWidth: 3)
+                Text(card.content)
+                    .font(.largeTitle)
+                
+            } else if card.isMatched {
+                shape.opacity(0)
+            } else {
+                shape
+            }
+        }
+        .foregroundColor(.red)
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        ContentView(viewModel: EmojiMemoryGame())
+    }
+}

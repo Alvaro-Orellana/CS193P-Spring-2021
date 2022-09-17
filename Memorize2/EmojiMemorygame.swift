@@ -7,17 +7,33 @@
 
 import Foundation
 
-class EmojiMemoryGame {
+class EmojiMemoryGame: ObservableObject {
     
     static let themes = [
-        "Vehicules": ["🚗", "🚕", "🚙", "🚌" ,"🚑" , "🏎", "🚜", "✈️", "🚀", "🚁", "⛵️"],
-        "Animals": ["🐬", "🐢", "🐙", "🦄" ,"🐔" , "🐼", "🦊", "🐻", "🐮", "🐒", "🐷"],
+        "Vehicules":   ["🚗", "🚕", "🚙", "🚌" ,"🚑" , "🏎", "🚜", "✈️", "🚀", "🚁", "⛵️"],
+        "Animals":     ["🐬", "🐢", "🐙", "🦄" ,"🐔" , "🐼", "🦊", "🐻", "🐮", "🐒", "🐷"],
         "Emoji Faces": ["😎", "☺️", "😍", "🤪" ,"🤓" , "😡", "😭", "😂", "🥹", "😦", "🤑"]
     ]
     
-    let model = MemoryGame<String>(numberOfPairsOfCards: 5) { _ in
-        return "😎"
+    static let emojis = ["🚗", "🚕", "🚙", "🚌" ,"🚑" , "🏎", "🚜", "✈️", "🚀", "🚁", "⛵️"]
+    
+    static func createMemoryGame(numberOfPairsOfCards: Int) -> MemoryGame<String> {
+        return MemoryGame(numberOfPairsOfCards: numberOfPairsOfCards) { pairIndex in
+            emojis[pairIndex]
+        }
+
     }
     
+    @Published
+    var model: MemoryGame<String> = createMemoryGame(numberOfPairsOfCards: 9)
     
+
+    
+    var cards: [MemoryGame<String>.Card] {
+        model.cards
+    }
+    
+    func choose(_ card: MemoryGame<String>.Card) {
+        model.choose(card)
+    }
 }
