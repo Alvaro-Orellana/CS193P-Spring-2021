@@ -13,7 +13,9 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: [Card] = []
     private var indexOfTheOneAndOnlyFaceupCard: Int?
     private(set) var score = 0
+    private let numberOfPointsPerMatch = 2
     private var previouslySeenCards: Set<Card.ID> = []
+    private var timePassed: Date = .now
     
     init(numberOfPairsOfCards: Int, content: (Int) -> CardContent) {
         for pairIndex in 0..<numberOfPairsOfCards {
@@ -34,16 +36,18 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                faceupIndex != choosenIndex,
                !card.isMatched
             {
-                
-                // Check if cards match
                 if cards[faceupIndex].content == cards[choosenIndex].content {
+                    // Cards matched
+                    
                     cards[faceupIndex].isMatched = true
                     cards[choosenIndex].isMatched = true
 
-                    score += 2
+                    let numberOfSecondsSinceLastCardWasChosen = timePassed.distance(to: .now)
+                    let pointsEarned = max(10 - Int(numberOfSecondsSinceLastCardWasChosen), 1) * numberOfPointsPerMatch
+                    score += pointsEarned
                
                 } else {
-                    // Cards mismatched, penalize score if necessary
+                    // Cards mismatched, penalize score
                     let firstID = cards[faceupIndex].id
                     let secondID = cards[choosenIndex].id
                     
@@ -66,6 +70,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
 
                     cards[index].isFaceUp = false
                 }
+                
+                timePassed = .now
                 indexOfTheOneAndOnlyFaceupCard = choosenIndex
             }
             cards[choosenIndex].isFaceUp = true
