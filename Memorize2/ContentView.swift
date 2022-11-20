@@ -13,23 +13,35 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                ForEach(viewModel.cards) { card in
-                    CardView(card: card)
-                        .aspectRatio(2/3, contentMode: .fit)
-                        .onTapGesture {
-                            viewModel.choose(card)
-                        }
+            VStack {
+                HStack {
+                    Spacer()
+                    Text("Score: \(viewModel.score)")
+                        .padding(.trailing)
+                        .font(.headline)
                 }
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+                    ForEach(viewModel.cards) { card in
+                        CardView(card: card, gradient: viewModel.themeColor)
+                            .aspectRatio(2/3, contentMode: .fit)
+                           // .foregroundColor(viewModel.themeColor)
+                            .onTapGesture {
+                                viewModel.choose(card)
+                            }
+                    }
+                }
+                Spacer()
+                Button("New game", action: viewModel.newGame)
+                    .padding(.all)
             }
-            .navigationTitle("Memorize!")
+            .navigationTitle(viewModel.themeName)
         }
     }
 }
 
 struct CardView: View {
-    
-    var card: MemoryGame<String>.Card
+    let card: MemoryGame<String>.Card
+    let gradient: [Color]
     
     var body: some View {
         ZStack {
@@ -39,19 +51,17 @@ struct CardView: View {
                 shape.strokeBorder(lineWidth: 3)
                 Text(card.content)
                     .font(.largeTitle)
-                
             } else if card.isMatched {
                 shape.opacity(0)
             } else {
                 shape
+                    .fill(Gradient(colors: gradient))
             }
         }
-        .foregroundColor(.red)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    
     static var previews: some View {
         ContentView(viewModel: EmojiMemoryGame())
     }

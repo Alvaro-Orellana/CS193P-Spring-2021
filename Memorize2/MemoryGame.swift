@@ -6,44 +6,69 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct MemoryGame<CardContent> where CardContent: Comparable {
+struct MemoryGame<CardContent> where CardContent: Equatable {
     
-    private(set) var cards: [Card]
+    private(set) var cards: [Card] = []
     private var indexOfTheOneAndOnlyFaceupCard: Int?
+    private(set) var score = 0
+    private var previouslySeenCards: Set<Card.ID> = []
     
     init(numberOfPairsOfCards: Int, content: (Int) -> CardContent) {
-        cards = []
         for pairIndex in 0..<numberOfPairsOfCards {
-            let pair1 = Card(id: pairIndex * 2, content: content(pairIndex))
-            let pair2 = Card(id: pairIndex * 2 + 1, content: content(pairIndex))
-            cards += [pair1, pair2]
+            let cardContent = content(pairIndex)
+            let card1 = Card(id: pairIndex * 2, content: cardContent)
+            let card2 = Card(id: pairIndex * 2 + 1, content: cardContent)
+            
+            cards.append(contentsOf: [card1, card2])
         }
+        cards.shuffle()
     }
  
     mutating func choose(_ card: Card) {
         if let choosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
+            
            
             if let faceupIndex = indexOfTheOneAndOnlyFaceupCard,
                faceupIndex != choosenIndex,
                !card.isMatched
             {
+                
                 // Check if cards match
                 if cards[faceupIndex].content == cards[choosenIndex].content {
                     cards[faceupIndex].isMatched = true
                     cards[choosenIndex].isMatched = true
+
+                    score += 2
+               
+                } else {
+                    // Cards mismatched, penalize score if necessary
+                    let firstID = cards[faceupIndex].id
+                    let secondID = cards[choosenIndex].id
+                    
+                    if previouslySeenCards.contains(firstID) {
+                        score -= 1
+                    }
+                    if previouslySeenCards.contains(secondID) {
+                        score -= 1
+                    }
                 }
                 
-                self.indexOfTheOneAndOnlyFaceupCard = nil
+                indexOfTheOneAndOnlyFaceupCard = nil
                 
             } else {
                 // Either all cards are face down or two cards are face up
                 for index in cards.indices {
+                    if cards[index].isFaceUp {
+                        previouslySeenCards.insert(cards[index].id)
+                    }
+
                     cards[index].isFaceUp = false
                 }
-                self.indexOfTheOneAndOnlyFaceupCard = choosenIndex
+                indexOfTheOneAndOnlyFaceupCard = choosenIndex
             }
-            cards[choosenIndex].isFaceUp.toggle()
+            cards[choosenIndex].isFaceUp = true
         }
     }
     
@@ -55,3 +80,33 @@ struct MemoryGame<CardContent> where CardContent: Comparable {
         let content: CardContent
     }
 }
+
+struct Theme {
+    let name: String
+    let emojis: [String]
+    let pairsOfCards: Int
+    let color: String
+    
+    // MARK: Extra credit
+    init(name: String, emojis: [String], color: String) {
+        self.name = name
+        self.emojis = emojis
+        self.pairsOfCards = emojis.count
+        self.color = color
+    }
+    
+    init(name: String, emojis: [String], pairsOfCards: Int, color: String) {
+        self.name = name
+        self.emojis = emojis
+        self.pairsOfCards = pairsOfCards
+        self.color = color
+    }
+    
+    init(name: String, emojis: [String], color: String, showsRandomNumberOfPairsOfCards: Bool) {
+        self.name = name
+        self.emojis = emojis
+        self.pairsOfCards = showsRandomNumberOfPairsOfCards ? Int.random(in: 1..<emojis.count) : emojis.count
+        self.color = color
+    }
+}
+
