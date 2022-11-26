@@ -44,20 +44,28 @@ struct CardView: View {
     let gradient: [Color]
     
     var body: some View {
-        ZStack {
-            let shape = RoundedRectangle(cornerRadius: 20)
-            
-            if card.isFaceUp {
-                shape.strokeBorder(lineWidth: 3)
-                Text(card.content)
-                    .font(.largeTitle)
-            } else if card.isMatched {
-                shape.opacity(0)
-            } else {
-                shape
-                    .fill(Gradient(colors: gradient))
+        GeometryReader { geometry in
+            ZStack {
+                let shape = RoundedRectangle(cornerRadius: 20)
+                
+                if card.isFaceUp {
+                    shape.strokeBorder(lineWidth: 3)
+                    Text(card.content)
+                        .font(calculateFont(for: geometry.size))
+                } else if card.isMatched {
+                    shape.opacity(0)
+                } else {
+                    shape
+                        .fill(Gradient(colors: gradient))
+                }
             }
         }
+    }
+    
+    
+    func calculateFont(for size: CGSize) -> Font {
+        let scalingFactor = 0.8
+        return Font.system(size: min(size.height, size.width) * scalingFactor)
     }
 }
 
