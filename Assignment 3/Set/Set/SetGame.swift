@@ -20,21 +20,36 @@ struct SetGame {
     
     
     init() {
+        /*
         for _ in 0..<initialNumberOfCards {
             
             let card = Card(number: .three, object: (.diamond, .open, .purple))
-            // let card2 = Card(number: .two, shape: .oval, shading: .open, color: .purple)
-            // let card3 = Card(number: .three, shape: .squiggle, shading: .open, color: .green)
+            let card2 = Card(number: .two, shape: .oval, shading: .open, color: .purple)
+            let card3 = Card(number: .three, shape: .squiggle, shading: .open, color: .green)
             deck.append(card)
         }
+        */
+        for number in Card.Number.allCases {
+            for shape in Card.Shape.allCases {
+                for shading in Card.Shading.allCases {
+                    for color in Card.Color.allCases {
+                        let card = Card(number: number, object: (shape, shading, color))
+                        deck.append(card)
+                    }
+                }
+            }
+        }
         
-        deck.shuffle()
         
+        
+        //deck.shuffle()
+        /*
         for _ in 0..<maxNumberOfVisibleCards {
             if !deck.isEmpty {
                 visibleCards.append(deck.removeFirst())
             }
         }
+         */
     }
     
     
@@ -96,19 +111,19 @@ extension SetGame {
         let object: (shape: Card.Shape, shading: Shading, color: Card.Color)
       
         
-        enum Number: Equatable {
+        enum Number: Equatable, CaseIterable {
             case one , two, three
         }
         
-        enum Shape: Equatable {
+        enum Shape: Equatable, CaseIterable {
             case diamond, squiggle, oval
         }
         
-        enum Shading: Equatable {
+        enum Shading: Equatable, CaseIterable {
             case solid, striped, open
         }
         
-        enum Color: Equatable {
+        enum Color: Equatable, CaseIterable {
             case red, green, purple
         }
     }

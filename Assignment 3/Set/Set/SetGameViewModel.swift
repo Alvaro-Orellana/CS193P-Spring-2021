@@ -12,7 +12,10 @@ class SetGameViewModel: ObservableObject {
     @Published private var model = SetGame()
     
     var cards: [SetGame.Card] {
-        model.visibleCards
+        (0...15).map { i in
+            model.deck[i]
+        }
+        //model.deck
     }
     
     func color(for card: SetGame.Card) -> Color {

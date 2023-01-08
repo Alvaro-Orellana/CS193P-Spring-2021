@@ -9,11 +9,7 @@ import SwiftUI
 
 struct DiamondShape: Shape {
     
-    let verticalAngle: Angle
-    let horizontalAngle: Angle
-    
     func path(in rect: CGRect) -> Path {
-        
         let top = CGPoint(x: rect.minX, y: rect.midY)
         let bottom = CGPoint(x: rect.maxX, y: rect.midY)
         let left = CGPoint(x: rect.midX, y: rect.minY)
@@ -34,6 +30,6 @@ struct DiamondShape: Shape {
 
 struct DiamondShape_Previews: PreviewProvider {
     static var previews: some View {
-        DiamondShape(verticalAngle: Angle(degrees: 60), horizontalAngle: Angle(degrees: 120))
+        DiamondShape()
     }
 }
