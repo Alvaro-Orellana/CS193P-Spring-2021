@@ -10,14 +10,14 @@ import SwiftUI
 struct CardView: View {
     let numberOfObjects: Int
     let color: Color
-    let shape: SetGame.Card.Shape
-    let shading: SetGame.Card.Shading
+    let shape: Card.Shape
+    let shading: Card.Shading
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(lineWidth: 4)
+                    .stroke(lineWidth: 5)
                     .foregroundColor(.red)
                 
                 VStack {
@@ -26,8 +26,6 @@ struct CardView: View {
                         switch shape {
                         case .diamond:
                             DiamondShape()
-                            
-                            
                             
                         case .squiggle:
                             SquiggleShape()

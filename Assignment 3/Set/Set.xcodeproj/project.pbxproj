@@ -7,18 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA121F4129747C7100404034 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA121F4029747C7100404034 /* Card.swift */; };
 		AAD089622932ED79008C40E2 /* SetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD089612932ED79008C40E2 /* SetApp.swift */; };
 		AAD089642932ED79008C40E2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD089632932ED79008C40E2 /* ContentView.swift */; };
 		AAD089662932ED7A008C40E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAD089652932ED7A008C40E2 /* Assets.xcassets */; };
 		AAD089692932ED7A008C40E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAD089682932ED7A008C40E2 /* Preview Assets.xcassets */; };
+		AAD089702932F07A008C40E2 /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD0896F2932F07A008C40E2 /* AspectVGrid.swift */; };
+		AAD089722932F4E7008C40E2 /* SetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD089712932F4E7008C40E2 /* SetGame.swift */; };
+		AAD089742933CC58008C40E2 /* SetGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD089732933CC58008C40E2 /* SetGameViewModel.swift */; };
+		AAD089762934264F008C40E2 /* DiamondShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD089752934264F008C40E2 /* DiamondShape.swift */; };
+		AAD08978293CCB84008C40E2 /* SquiggleShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD08977293CCB84008C40E2 /* SquiggleShape.swift */; };
+		AAD0897A293CD424008C40E2 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD08979293CD424008C40E2 /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA121F4029747C7100404034 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		AAD0895E2932ED79008C40E2 /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD089612932ED79008C40E2 /* SetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetApp.swift; sourceTree = "<group>"; };
 		AAD089632932ED79008C40E2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AAD089652932ED7A008C40E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAD089682932ED7A008C40E2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AAD0896F2932F07A008C40E2 /* AspectVGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
+		AAD089712932F4E7008C40E2 /* SetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGame.swift; sourceTree = "<group>"; };
+		AAD089732933CC58008C40E2 /* SetGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameViewModel.swift; sourceTree = "<group>"; };
+		AAD089752934264F008C40E2 /* DiamondShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiamondShape.swift; sourceTree = "<group>"; };
+		AAD08977293CCB84008C40E2 /* SquiggleShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquiggleShape.swift; sourceTree = "<group>"; };
+		AAD08979293CD424008C40E2 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +46,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA121F4229747C7B00404034 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				AAD089712932F4E7008C40E2 /* SetGame.swift */,
+				AA121F4029747C7100404034 /* Card.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AA121F4329747E1D00404034 /* Viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				AAD089732933CC58008C40E2 /* SetGameViewModel.swift */,
+			);
+			path = Viewmodel;
+			sourceTree = "<group>";
+		};
+		AA121F4429747E2800404034 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AAD089632932ED79008C40E2 /* ContentView.swift */,
+				AAD08979293CD424008C40E2 /* CardView.swift */,
+				AAD0896F2932F07A008C40E2 /* AspectVGrid.swift */,
+				AA121F4529747E3500404034 /* Shapes */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AA121F4529747E3500404034 /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				AAD089752934264F008C40E2 /* DiamondShape.swift */,
+				AAD08977293CCB84008C40E2 /* SquiggleShape.swift */,
+			);
+			path = Shapes;
+			sourceTree = "<group>";
+		};
 		AAD089552932ED79008C40E2 = {
 			isa = PBXGroup;
 			children = (
@@ -52,7 +103,9 @@
 			isa = PBXGroup;
 			children = (
 				AAD089612932ED79008C40E2 /* SetApp.swift */,
-				AAD089632932ED79008C40E2 /* ContentView.swift */,
+				AA121F4429747E2800404034 /* View */,
+				AA121F4329747E1D00404034 /* Viewmodel */,
+				AA121F4229747C7B00404034 /* Model */,
 				AAD089652932ED7A008C40E2 /* Assets.xcassets */,
 				AAD089672932ED7A008C40E2 /* Preview Content */,
 			);
@@ -137,8 +190,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAD089762934264F008C40E2 /* DiamondShape.swift in Sources */,
+				AA121F4129747C7100404034 /* Card.swift in Sources */,
 				AAD089642932ED79008C40E2 /* ContentView.swift in Sources */,
 				AAD089622932ED79008C40E2 /* SetApp.swift in Sources */,
+				AAD08978293CCB84008C40E2 /* SquiggleShape.swift in Sources */,
+				AAD089722932F4E7008C40E2 /* SetGame.swift in Sources */,
+				AAD089702932F07A008C40E2 /* AspectVGrid.swift in Sources */,
+				AAD0897A293CD424008C40E2 /* CardView.swift in Sources */,
+				AAD089742933CC58008C40E2 /* SetGameViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

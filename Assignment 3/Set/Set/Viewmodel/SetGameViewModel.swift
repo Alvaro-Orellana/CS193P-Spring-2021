@@ -11,14 +11,11 @@ class SetGameViewModel: ObservableObject {
     
     @Published private var model = SetGame()
     
-    var cards: [SetGame.Card] {
-        (0...15).map { i in
-            model.deck[i]
-        }
-        //model.deck
+    var cards: [Card] {
+        model.visibleCards
     }
     
-    func color(for card: SetGame.Card) -> Color {
+    func color(for card: Card) -> Color {
         switch card.object.color {
         case .red:
             return .red
@@ -29,14 +26,9 @@ class SetGameViewModel: ObservableObject {
         }
     }
     
-    func numberOfObjects(for card: SetGame.Card) -> Int {
-        switch card.number {
-        case .one:
-            return 1
-        case .two:
-            return 2
-        case .three:
-            return 3
-        }
+    
+    func selectCard(_ card: Card) {
+        model.cardSelected(card: card)
     }
+   
 }

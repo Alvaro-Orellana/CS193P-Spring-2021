@@ -9,26 +9,28 @@ import Foundation
 
 struct SetGame {
     
-    private let initialNumberOfCards = 81
     private let maxNumberOfVisibleCards = 12
-    
     private(set) var score = 0
-    private(set) var deck: [Card] = []
-    private(set) var visibleCards: [Card] = []
     
-    private(set) var correctSets: [(Card, Card, Card)] = []
+    private(set) var deck: [Card]
+    private(set) var visibleCards: [Card]
     
+    private var correctSets: [(Card, Card, Card)] = []
+    
+    private var selectedCards: [Card] = [] {
+        didSet {
+            if selectedCards.count == setMaxCapacity {
+                playGame(card1: selectedCards[0], card2: selectedCards[1], card3: selectedCards[2])
+                selectedCards = []
+            }
+        }
+    }
+    private let setMaxCapacity = 3
     
     init() {
-        /*
-        for _ in 0..<initialNumberOfCards {
-            
-            let card = Card(number: .three, object: (.diamond, .open, .purple))
-            let card2 = Card(number: .two, shape: .oval, shading: .open, color: .purple)
-            let card3 = Card(number: .three, shape: .squiggle, shading: .open, color: .green)
-            deck.append(card)
-        }
-        */
+        
+        // Initialize deck with all possible combinations
+        deck = []
         for number in Card.Number.allCases {
             for shape in Card.Shape.allCases {
                 for shading in Card.Shading.allCases {
@@ -39,19 +41,25 @@ struct SetGame {
                 }
             }
         }
+        deck.shuffle()
         
-        
-        
-        //deck.shuffle()
-        /*
+        // Initialize visible cards
+        visibleCards = []
         for _ in 0..<maxNumberOfVisibleCards {
-            if !deck.isEmpty {
-                visibleCards.append(deck.removeFirst())
-            }
+            visibleCards.append(deck.removeFirst())
         }
-         */
     }
     
+    mutating func cardSelected(card: Card) {
+        // Check if card is already present. If so deselect it (Remove it)
+        if let index = selectedCards.firstIndex(where: { $0.id == card.id }) {
+            selectedCards.remove(at: index)
+            return
+        }
+
+        selectedCards.append(card)
+
+    }
     
     mutating func playGame(card1: Card, card2: Card, card3: Card) {
         let numbersAreEqual = isSet(feature1: card1.number, feature2: card2.number, feature3: card3.number)
@@ -75,9 +83,10 @@ struct SetGame {
     
     
     private mutating func removeCards(card1: Card, card2: Card, card3: Card) {
-        guard let card1Index = visibleCards.firstIndex(where: { $0.id == card1.id }),
-              let card2Index = visibleCards.firstIndex(where: { $0.id == card2.id }),
-              let card3Index = visibleCards.firstIndex(where: { $0.id == card3.id })
+        guard
+            let card1Index = visibleCards.firstIndex(where: { $0.id == card1.id }),
+            let card2Index = visibleCards.firstIndex(where: { $0.id == card2.id }),
+            let card3Index = visibleCards.firstIndex(where: { $0.id == card3.id })
         else { return }
         
         visibleCards.remove(at: card1Index)
@@ -86,7 +95,7 @@ struct SetGame {
     }
     
     private mutating func drawCards() {
-        while visibleCards.count < 12 && !deck.isEmpty {
+        while visibleCards.count < maxNumberOfVisibleCards && !deck.isEmpty {
             visibleCards.append(deck.removeFirst())
         }
     }
@@ -97,34 +106,6 @@ struct SetGame {
     private func isSet<T: Equatable>(feature1: T, feature2: T, feature3: T) -> Bool {
         return (feature1 == feature2 && feature2 == feature3) || (feature1 != feature2 && feature1 != feature3 && feature2 != feature3)
     }
-    
-    private func isNotSet<T: Equatable>(feature1: T, feature2: T, feature3: T) -> Bool {
-        return (feature1 == feature2 && feature2 != feature3) || (feature1 == feature3 && feature1 != feature2)
-    }
 }
 
 
-extension SetGame {
-    struct Card: Identifiable {
-        let id = UUID()
-        let number: Number
-        let object: (shape: Card.Shape, shading: Shading, color: Card.Color)
-      
-        
-        enum Number: Equatable, CaseIterable {
-            case one , two, three
-        }
-        
-        enum Shape: Equatable, CaseIterable {
-            case diamond, squiggle, oval
-        }
-        
-        enum Shading: Equatable, CaseIterable {
-            case solid, striped, open
-        }
-        
-        enum Color: Equatable, CaseIterable {
-            case red, green, purple
-        }
-    }
-}
